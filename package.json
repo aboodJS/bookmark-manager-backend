@@ -1,0 +1,17 @@
+{
+  "name": "bookmark-manager-backend",
+  "version": "0.0.1",
+  "description": "the backend for the bookmark manager",
+  "license": "ISC",
+  "author": "aboodJS",
+  "type": "commonjs",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "express": "^5.2.1",
+    "nodemon": "^3.1.11"
+  }
+}
