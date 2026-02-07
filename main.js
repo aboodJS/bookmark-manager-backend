@@ -1,14 +1,24 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
+const cors = require("cors");
 const app = express();
 const port = 3000;
 const saltRounds = 10;
+
+// TODO: fix the issue of the server reciving undefined from the client-side
+
+// Source - https://stackoverflow.com/a/54165206
+// Posted by Foobar, modified by community. See post 'Timeline' for change history
+// Retrieved 2026-02-07, License - CC BY-SA 4.0
+
+app.use(cors());
 
 app.use(express.json());
 
 app.get("/", async (req, res) => {});
 
 app.post("/signup", async (req, res) => {
+  console.log(req.body);
   bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
     try {
       res.send({ username: req.body.username, "hashed password": hash });
