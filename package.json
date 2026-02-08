@@ -4,7 +4,7 @@
   "description": "the backend for the bookmark manager",
   "license": "ISC",
   "author": "aboodJS",
-  "type": "commonjs",
+  "type": "module",
   "main": "main.js",
   "scripts": {
     "dev": "nodemon ."

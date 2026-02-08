@@ -1,7 +1,6 @@
-const express = require("express");
-const bcrypt = require("bcrypt");
-const cors = require("cors");
-const app = express();
+import express, { json } from "express";
+import { hash as _hash } from "bcrypt";
+import cors from "cors";
 const port = 3000;
 const saltRounds = 10;
 
@@ -11,15 +10,13 @@ const saltRounds = 10;
 // Posted by Foobar, modified by community. See post 'Timeline' for change history
 // Retrieved 2026-02-07, License - CC BY-SA 4.0
 
+const app = express();
 app.use(cors());
-
 app.use(express.json());
-
-app.get("/", async (req, res) => {});
 
 app.post("/signup", async (req, res) => {
   console.log(req.body);
-  bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
+  _hash(req.body.password, saltRounds, function (err, hash) {
     try {
       res.send({ username: req.body.username, "hashed password": hash });
     } catch (err) {
@@ -27,6 +24,11 @@ app.post("/signup", async (req, res) => {
     }
   });
 });
+
+// app.post("/signup", async (req, res) => {
+//   console.log(req.body);
+//   res.send(req.body);
+// });
 
 app.post("/login", async (req, res) => {
   console.log(req.body);
