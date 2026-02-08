@@ -4,8 +4,6 @@ import cors from "cors";
 const port = 3000;
 const saltRounds = 10;
 
-// TODO: fix the issue of the server reciving undefined from the client-side
-
 // Source - https://stackoverflow.com/a/54165206
 // Posted by Foobar, modified by community. See post 'Timeline' for change history
 // Retrieved 2026-02-07, License - CC BY-SA 4.0
