@@ -3,7 +3,6 @@ import { hash as _hash } from "bcrypt";
 import { Pool } from "pg";
 import "dotenv/config";
 import cors from "cors";
-import { neon } from "@neondatabase/serverless";
 
 const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD } = process.env;
 
