@@ -40,8 +40,14 @@ app.post("/signup", async (req, res) => {
 app.post("/login", async (req, res) => {
   const client = await pools.connect();
   try {
-    const result = await client.query("SELECT * FROM users");
-    res.json(result.rows);
+    const result = await client.query(
+      `SELECT * FROM users WHERE username = '${req.body.username}' OR email = '${req.body.email}';`,
+    );
+    if (result.rows.length > 0) {
+      res.json({ msg: "login complete" });
+    } else {
+      res.json({ msg: "wrong username or password" });
+    }
   } catch (error) {
     console.log(error);
   } finally {
