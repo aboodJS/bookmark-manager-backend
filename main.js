@@ -1,5 +1,5 @@
 import express, { json } from "express";
-import { hash as _hash } from "bcrypt";
+import { hash as _hash, compare } from "bcrypt";
 import { Pool } from "pg";
 import "dotenv/config";
 import cors from "cors";
@@ -20,6 +20,8 @@ const pools = new Pool({
     require: true,
   },
 });
+
+// TODO: make hashing logic store the hash
 
 app.post("/signup", async (req, res) => {
   _hash(req.body.password, 10, async (err, hash) => {
@@ -44,9 +46,17 @@ app.post("/login", async (req, res) => {
       `SELECT * FROM users WHERE username = '${req.body.username}' OR email = '${req.body.email}';`,
     );
     if (result.rows.length > 0) {
-      res.json({ msg: "login complete" });
+      const check = await compare(
+        `${req.body.password}`,
+        result.rows[0].password,
+      );
+      if (check) {
+        res.json({ msg: "login complete" });
+      } else {
+        res.json({ msg: "wrong password" });
+      }
     } else {
-      res.json({ msg: "wrong username or password" });
+      res.json({ msg: "wrong username or email" });
     }
   } catch (error) {
     console.log(error);
