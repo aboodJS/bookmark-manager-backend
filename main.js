@@ -26,7 +26,7 @@ app.post("/signup", async (req, res) => {
     const client = await pools.connect();
     try {
       const result = await client.query(
-        `INSERT INTO users VALUES ('${req.body.username}', '${req.body.email}', '${hash}')`,
+        `INSERT INTO users (username, email, password) VALUES ('${req.body.username}', '${req.body.email}', '${hash}');`,
       );
       res.send({ msg: "request done" });
     } catch (err) {
@@ -37,7 +37,7 @@ app.post("/signup", async (req, res) => {
   });
 });
 
-app.get("/users", async (req, res) => {
+app.post("/login", async (req, res) => {
   const client = await pools.connect();
   try {
     const result = await client.query("SELECT * FROM users");
