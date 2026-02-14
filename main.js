@@ -3,7 +3,7 @@ import { hash, compare, genSalt } from "bcrypt";
 import { Pool } from "pg";
 import "dotenv/config";
 import cors from "cors";
-
+import jsonwebtoken from "jsonwebtoken";
 const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD } = process.env;
 
 const app = express();
@@ -49,7 +49,13 @@ app.post("/login", async (req, res) => {
     if (result.rows.length > 0) {
       const check = compare(req.body.password, result.rows[0].password);
       if (check) {
-        res.json({ msg: "login complete" });
+        const token = jsonwebtoken.sign(
+          { userName: result.rows[0].username },
+          process.env.JWT_SECRET,
+          { expiresIn: "15m" },
+        );
+        console.log(token);
+        res.json({ msg: "login complete", jwt_token: token });
       } else {
         res.json({ msg: "wrong password" });
       }
