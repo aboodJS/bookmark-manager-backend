@@ -33,7 +33,7 @@ app.post("/signup", async (req, res) => {
     console.log(hashedPassword);
     res.send({ msg: "request done" });
   } catch (err) {
-    res.send({ error: `encountered error: ${err}` });
+    res.json({ error: `encountered error: ${err}` });
   } finally {
     client.release();
   }
@@ -46,7 +46,7 @@ app.post("/login", async (req, res) => {
       `SELECT * FROM users WHERE username = '${req.body.username}' OR email = '${req.body.email}';`,
     );
 
-    if (result.rows.length > 0) {
+    if (result.rows[0] !== undefined) {
       const check = compare(req.body.password, result.rows[0].password);
       if (check) {
         const token = jsonwebtoken.sign(
@@ -55,12 +55,12 @@ app.post("/login", async (req, res) => {
           { expiresIn: "15m" },
         );
         console.log(token);
-        res.json({ msg: "login complete", jwt_token: token });
+        res.status(200).json({ msg: "login complete", jwt_token: token });
       } else {
-        res.json({ msg: "wrong password" });
+        res.status(403).json({ error: "wrong password" });
       }
     } else {
-      res.json({ msg: "wrong information please try again" });
+      res.status(403).json({ error: "wrong information please try again" });
     }
   } catch (error) {
     console.log(error);
